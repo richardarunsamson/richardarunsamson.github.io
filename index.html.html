@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Richard Arun Samson T — Agile Delivery & Implementation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F6F5F1;
+    --paper-raised: #EFEDE6;
+    --ink: #1C2321;
+    --ink-soft: #4B534F;
+    --rail: #2F5D50;
+    --rail-soft: #6E8C82;
+    --amber: #A8632A;
+    --hairline: #DDD9CF;
+    --max: 760px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap{
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  a{ color: var(--rail); }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--rail);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    border-bottom: 1px solid var(--hairline);
+    position: sticky;
+    top: 0;
+    background: rgba(246,245,241,0.92);
+    backdrop-filter: blur(6px);
+    z-index: 10;
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 18px 0;
+    gap: 16px;
+  }
+  .nav-name{
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+  }
+  .nav-links{
+    display:flex;
+    gap: 22px;
+    list-style:none;
+    margin:0; padding:0;
+    font-size: 0.88rem;
+  }
+  .nav-links a{
+    text-decoration:none;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .nav-links a:hover{
+    color: var(--ink);
+    border-bottom-color: var(--rail);
+  }
+  @media (max-width: 560px){
+    .nav-links{ display:none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 72px 0 56px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .hero-role{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.82rem;
+    color: var(--rail);
+    margin: 0 0 18px;
+  }
+  .hero h1{
+    font-size: clamp(2.1rem, 5vw, 3.1rem);
+    line-height: 1.16;
+    margin: 0 0 22px;
+    font-weight: 700;
+    max-width: 14ch;
+    opacity: 0;
+    animation: rise .7s ease forwards;
+  }
+  .hero p.lede{
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 58ch;
+    margin: 0 0 28px;
+    opacity: 0;
+    animation: rise .7s ease .12s forwards;
+  }
+  .hero-meta{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    padding-top: 22px;
+    border-top: 1px solid var(--hairline);
+    opacity: 0;
+    animation: rise .7s ease .22s forwards;
+  }
+  .hero-meta span{ white-space: nowrap; }
+  .hero-meta strong{ color: var(--ink); font-weight: 600; }
+
+  @keyframes rise{
+    from{ opacity: 0; transform: translateY(10px); }
+    to{ opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero h1, .hero p.lede, .hero-meta{ animation: none; opacity: 1; }
+  }
+
+  /* ---------- Section shell ---------- */
+  section{ padding: 56px 0; border-bottom: 1px solid var(--hairline); }
+  section:last-of-type{ border-bottom: none; }
+  h2{
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .section-sub{
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    margin: 0 0 36px;
+    max-width: 54ch;
+  }
+
+  /* ---------- Delivery stories ---------- */
+  .story{
+    border-left: 3px solid var(--rail-soft);
+    padding: 4px 0 4px 24px;
+    margin-bottom: 44px;
+  }
+  .story:last-child{ margin-bottom: 0; }
+  .story-company{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--rail);
+    margin: 0 0 6px;
+  }
+  .story h3{
+    font-size: 1.18rem;
+    margin: 0 0 16px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .story dl{
+    margin: 0;
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    row-gap: 12px;
+    column-gap: 16px;
+  }
+  .story dt{
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+    padding-top: 2px;
+  }
+  .story dd{
+    margin: 0;
+    font-size: 0.96rem;
+  }
+  @media (max-width: 560px){
+    .story dl{ grid-template-columns: 1fr; row-gap: 4px; }
+    .story dt{ padding-top: 10px; }
+  }
+
+  /* ---------- Impact areas ---------- */
+  .impact-list{
+    list-style:none;
+    margin:0; padding:0;
+    display: grid;
+    gap: 18px;
+  }
+  .impact-list li{
+    padding-left: 18px;
+    position: relative;
+    font-size: 0.98rem;
+  }
+  .impact-list li::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    background: var(--amber);
+  }
+  .impact-list strong{ font-weight: 600; }
+
+  /* ---------- Toolkit ---------- */
+  .toolkit-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  @media (max-width: 640px){
+    .toolkit-grid{ grid-template-columns: 1fr; gap: 28px; }
+  }
+  .toolkit-col h3{
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .toolkit-col ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    display: grid;
+    gap: 8px;
+  }
+
+  /* ---------- Certifications ---------- */
+  .cert-list{
+    margin:0; padding:0;
+    list-style:none;
+    display: grid;
+    gap: 14px;
+  }
+  .cert-list li{
+    display:flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-size: 0.96rem;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .cert-list li:last-child{ border-bottom: none; padding-bottom: 0; }
+  .cert-name{ font-weight: 500; }
+  .cert-issuer{
+    color: var(--ink-soft);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  /* ---------- Footer / contact ---------- */
+  footer{ padding: 56px 0 72px; }
+  .contact-box{
+    background: var(--paper-raised);
+    border-left: 3px solid var(--rail);
+    padding: 28px 28px;
+  }
+  .contact-box h2{ margin-bottom: 10px; }
+  .contact-box p{ color: var(--ink-soft); margin: 0 0 20px; max-width: 46ch; }
+  .contact-links{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+    font-size: 0.95rem;
+  }
+  .contact-links a{ text-decoration: none; border-bottom: 1px solid var(--rail-soft); }
+  .contact-links a:hover{ border-bottom-color: var(--rail); }
+  .foot-note{
+    margin-top: 40px;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    font-family: "IBM Plex Mono", monospace;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="nav-name">Richard Arun Samson T</div>
+    <ul class="nav-links">
+      <li><a href="#stories">Delivery stories</a></li>
+      <li><a href="#toolkit">Toolkit</a></li>
+      <li><a href="#credentials">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap" style="border-left:none;">
+    <p class="hero-role">Certified ScrumMaster® · Agile delivery &amp; implementation</p>
+    <h1>Turning escalations, backlogs, and rollouts into stable, predictable releases.</h1>
+    <p class="lede">I'm an Agile Delivery Specialist who bridges product, engineering, QA, and business stakeholders — running sprint-aligned UAT, structured backlog refinement, and release governance for enterprise SaaS and HRMS platforms.</p>
+    <div class="hero-meta">
+      <span><strong>Location</strong> · Chennai, Tamil Nadu</span>
+      <span><strong>Phone</strong> · +91 9176127353</span>
+      <span><strong>Email</strong> · richardarunsamson@gmail.com</span>
+      <span><a href="#">LinkedIn profile</a></span>
+    </div>
+  </section>
+
+  <section id="stories" class="wrap">
+    <h2>Delivery stories</h2>
+    <p class="section-sub">Three engagements where structured Agile process turned operational friction into shippable, stable outcomes.</p>
+
+    <div class="story">
+      <p class="story-company">Adrenalin eSystems Limited</p>
+      <h3>Enterprise HRMS release governance &amp; cross-functional alignment</h3>
+      <dl>
+        <dt>Context</dt>
+        <dd>Customer-reported defects and enhancement requests needed structured coordination across Product, Engineering, and QA.</dd>
+        <dt>Action</dt>
+        <dd>Translated escalations into clear Jira user stories and bug tickets with explicit acceptance criteria, facilitated backlog grooming and sprint triage against SLA/TAT benchmarks, and ran RCA and retrospective reviews to catch incident trends early.</dd>
+        <dt>Outcome</dt>
+        <dd>Faster resolution cycles for enterprise accounts, more predictable releases, and smoother platform version adoption.</dd>
+      </dl>
+    </div>
+
+    <div class="story">
+      <p class="story-company">DigiSME (Majulah Info-Tech)</p>
+      <h3>Multi-module SaaS implementation &amp; UAT acceleration</h3>
+      <dl>
+        <dt>Context</dt>
+        <dd>Go-live schedules across Payroll, Leave, Attendance, and CRM modules needed to move faster without disrupting operations.</dd>
+        <dt>Action</dt>
+        <dd>Managed milestone-based sprint deployments as the functional bridge between client stakeholders and dev teams, structured sprint-aligned UAT cycles, and built standardized SOPs and troubleshooting repositories.</dd>
+        <dt>Outcome</dt>
+        <dd>Fewer onboarding bottlenecks, better first-contact resolution, and a shorter time-to-value for regional clients.</dd>
+      </dl>
+    </div>
+
+    <div class="story">
+      <p class="story-company">Access Health Care</p>
+      <h3>Operational bottleneck removal &amp; workflow data modeling</h3>
+      <dl>
+        <dt>Context</dt>
+        <dd>Workflow delays and cross-departmental bottlenecks needed proactive tracking rather than after-the-fact fixes.</dd>
+        <dt>Action</dt>
+        <dd>Designed Excel data models and statistical dashboards to track delivery velocity and SLA adherence, and led operational alignment syncs between internal teams and external stakeholders.</dd>
+        <dt>Outcome</dt>
+        <dd>Lower turnaround times and predictable delivery standards across complex operational workflows.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="impact" class="wrap">
+    <h2>Where this shows up</h2>
+    <p class="section-sub">The through-line across every engagement.</p>
+    <ul class="impact-list">
+      <li><strong>SLA &amp; TAT optimization</strong> — strict adherence to turnaround times across defect resolution and deployment milestones.</li>
+      <li><strong>Deployment predictability</strong> — structured UAT and sprint-aligned go-lives across enterprise HRMS and CRM rollouts.</li>
+      <li><strong>Knowledge governance</strong> — end-to-end SOPs and functional documentation that streamline post-launch support and onboarding.</li>
+      <li><strong>Continuous improvement</strong> — RCA and retrospective findings fed directly back into active sprint planning.</li>
+    </ul>
+  </section>
+
+  <section id="toolkit" class="wrap">
+    <h2>Toolkit</h2>
+    <p class="section-sub">The practices and platforms behind each delivery story.</p>
+    <div class="toolkit-grid">
+      <div class="toolkit-col">
+        <h3>Agile &amp; Scrum practices</h3>
+        <ul>
+          <li>Sprint planning</li>
+          <li>Daily stand-ups</li>
+          <li>Sprint reviews &amp; retrospectives</li>
+          <li>Backlog refinement</li>
+          <li>User story mapping</li>
+          <li>Capacity planning</li>
+          <li>Impediment removal</li>
+        </ul>
+      </div>
+      <div class="toolkit-col">
+        <h3>Platforms &amp; tooling</h3>
+        <ul>
+          <li>Jira Software (Cloud/DC)</li>
+          <li>Confluence</li>
+          <li>Microsoft Azure DevOps (Boards/Pipelines)</li>
+          <li>Adrenalin Max HRMS</li>
+          <li>Info-Tech HRMS</li>
+          <li>MS Excel (data modeling)</li>
+        </ul>
+      </div>
+      <div class="toolkit-col">
+        <h3>Delivery leadership</h3>
+        <ul>
+          <li>Enterprise SaaS rollouts</li>
+          <li>UAT management</li>
+          <li>Release governance</li>
+          <li>Change management</li>
+          <li>Time-to-value acceleration</li>
+          <li>SLA/TAT compliance</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="credentials" class="wrap">
+    <h2>Certifications &amp; education</h2>
+    <ul class="cert-list">
+      <li><span class="cert-name">Certified ScrumMaster® (CSM)</span><span class="cert-issuer">Scrum Alliance</span></li>
+      <li><span class="cert-name">PMI-ACP® (Agile Certified Practitioner)</span><span class="cert-issuer">PMI · self-study, in progress</span></li>
+      <li><span class="cert-name">Microsoft Azure &amp; Cloud Fundamentals</span><span class="cert-issuer">Microsoft</span></li>
+      <li><span class="cert-name">Atlassian Jira Fundamentals</span><span class="cert-issuer">Atlassian</span></li>
+      <li><span class="cert-name">AI &amp; Generative Tools for Workspace</span><span class="cert-issuer">Google · Aug 2026</span></li>
+      <li><span class="cert-name">B.Tech, Information Technology</span><span class="cert-issuer">Anna University · 2010–2014</span></li>
+    </ul>
+  </section>
+</main>
+
+<footer id="contact" class="wrap">
+  <div class="contact-box">
+    <h2>Get in touch</h2>
+    <p>Open to Agile delivery, project management, and customer success roles across enterprise SaaS and implementation teams.</p>
+    <div class="contact-links">
+      <a href="mailto:richardarunsamson@gmail.com">richardarunsamson@gmail.com</a>
+      <a href="tel:+919176127353">+91 9176127353</a>
+      <a href="#">LinkedIn profile</a>
+      <span>Chennai, Tamil Nadu</span>
+    </div>
+  </div>
+  <p class="foot-note">Richard Arun Samson T — Agile delivery &amp; implementation</p>
+</footer>
+
+</body>
+</html>
