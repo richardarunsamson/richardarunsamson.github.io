@@ -1,34 +1,611 @@
-<div align="center">
+<!DOCTYPE html>
+<html lang="en" data-theme="jarvis">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio OS // Customer Success Intelligence System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
-<!-- J.A.R.V.I.S. HEADER BANNER -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:091428,50:0A84FF,100:00F2FE&height=220&section=header&text=J.A.R.V.I.S.%20PROTOCOL%20ACTIVATED&fontSize=34&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=OPERATING%20SYSTEM%20FOR%20ENTERPRISE%20CUSTOMER%20SUCCESS%20%7C%20AGILE%20%7C%20LEAN%20SIX%20SIGMA&descAlignY=58&descSize=12" width="100%"/>
+  :root{
+    --bg: #050a0f;
+    --bg-panel: #081019;
+    --bg-panel-alt: #0b1622;
+    --line: rgba(94,230,255,0.20);
+    --line-strong: rgba(94,230,255,0.45);
+    --primary: #5ee6ff;
+    --primary-soft: rgba(94,230,255,0.12);
+    --primary-dim: #2a7f94;
+    --amber: #ffb454;
+    --text: #cfe9ef;
+    --text-dim: #6f8c98;
+    --text-faint: #3f5560;
+    --glow: 0 0 24px rgba(94,230,255,0.25);
+    --radius: 2px;
+  }
 
-<!-- TYPING HUD EFFECT -->
-<a href="#">
-  <img src="https://readme-typing-svg.demolab.com?font=Share+Tech+Mono&size=18&duration=2500&pause=1000&color=00F2FE&center=true&vCenter=true&width=750&lines=%3E+INITIALIZING+CUSTOMER+SUCCESS+INTELLIGENCE+MODULE...;%3E+MONITORING+NET+REVENUE+RETENTION+%26+HEALTH+SCORES...;%3E+EXECUTING+LEAN+SIX+SIGMA+DMAIC+CHURN+REDUCTION...;%3E+BRIDGING+BUSINESS+STAKEHOLDERS+%26+ENGINEERING+SQUADS..." alt="Typing SVG" />
-</a>
+  html[data-theme="ultron"]{
+    --line: rgba(255,79,90,0.22);
+    --line-strong: rgba(255,79,90,0.5);
+    --primary: #ff4f5a;
+    --primary-soft: rgba(255,79,90,0.12);
+    --primary-dim: #96323a;
+    --amber: #ff9a54;
+    --text: #f0d9da;
+    --text-dim: #8c6f72;
+    --text-faint: #553c3e;
+    --glow: 0 0 24px rgba(255,79,90,0.28);
+  }
 
-<br/>
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
 
-<!-- STATUS BADGES -->
-[![CSM](https://img.shields.io/badge/CERTIFIED-SCRUM_MASTER_(CSM)-00C8FF?style=for-the-badge&logo=scrumalliance&logoColor=black)](https://linkedin.com)
-[![Lean Six Sigma](https://img.shields.io/badge/LEAN_SIX_SIGMA-GREEN_%26_BLACK_BELT-0A84FF?style=for-the-badge&logo=target&logoColor=white)](https://linkedin.com)
-[![PMI-ACP](https://img.shields.io/badge/PMI--ACP-AGILE_FRAMEWORKS-00F2FE?style=for-the-badge&logo=projectmanagementinstitute&logoColor=black)](https://linkedin.com)
-[![Azure](https://img.shields.io/badge/AZURE-AZ--900_CLOUD-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)](https://linkedin.com)
-[![Google AI](https://img.shields.io/badge/GOOGLE_AI-ESSENTIALS_CERTIFIED-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://linkedin.com)
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: color .4s ease;
+  }
+  body.no-scroll{ overflow: hidden; height: 100vh; }
 
+  h1,h2,h3{
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin: 0;
+    color: #eaf7fa;
+  }
+
+  html[data-theme="ultron"] h1, html[data-theme="ultron"] h2, html[data-theme="ultron"] h3{
+    color: #f7e6e7;
+  }
+
+  a{ color: var(--primary); }
+
+  ::selection{ background: var(--primary-soft); color: var(--text); }
+
+  /* ---------- background grid + noise ---------- */
+  .field{
+    position: fixed; inset: 0; z-index: -2; pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: .35;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 90%);
+  }
+  .glow-orb{
+    position: fixed; z-index:-1; pointer-events:none;
+    width: 60vw; height: 60vw; max-width: 900px; max-height: 900px;
+    top: -20vw; left: 50%; transform: translateX(-50%);
+    background: radial-gradient(circle, var(--primary-soft) 0%, transparent 70%);
+    filter: blur(10px);
+  }
+
+  /* ---------- boot sequence ---------- */
+  #boot{
+    position: fixed; inset:0; z-index: 999;
+    background: #030608;
+    display:flex; align-items:center; justify-content:center;
+    transition: opacity .6s ease, visibility .6s ease;
+  }
+  #boot.hidden{ opacity:0; visibility:hidden; }
+  #boot .log{ width: min(560px, 86vw); }
+  #boot .line{
+    font-size: 13px; color: var(--primary); opacity:0; white-space: nowrap; overflow:hidden;
+    border-right: 2px solid transparent;
+    animation: reveal .4s ease forwards;
+  }
+  #boot .line span.tag{ color: var(--text-dim); }
+  #boot .line:nth-child(1){ animation-delay: .15s; }
+  #boot .line:nth-child(2){ animation-delay: .65s; }
+  #boot .line:nth-child(3){ animation-delay: 1.15s; }
+  #boot .line:nth-child(4){ animation-delay: 1.65s; }
+  #boot .line:nth-child(5){ animation-delay: 2.2s; color: var(--amber); font-weight:600;}
+  @keyframes reveal{ to{ opacity:1; } }
+  #boot .bar{ margin-top: 22px; height: 2px; background: rgba(255,255,255,0.08); position: relative; overflow:hidden; }
+  #boot .bar::after{
+    content:''; position:absolute; inset:0; width:0%; background: var(--primary);
+    animation: load 2.6s ease forwards; box-shadow: var(--glow);
+  }
+  @keyframes load{ to{ width: 100%; } }
+
+  /* ---------- topbar ---------- */
+  header.topbar{
+    position: sticky; top:0; z-index: 50;
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 16px clamp(18px, 4vw, 48px);
+    background: rgba(5,10,15,0.75);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Chakra Petch'; font-size:14px; letter-spacing:.06em; }
+  .brand .dot{ width:8px; height:8px; border-radius:50%; background: var(--primary); box-shadow: 0 0 8px var(--primary); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+  .theme-toggle{
+    display:flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono'; font-size:11px; color: var(--text-dim);
+  }
+  .switch{
+    position: relative; width: 92px; height: 30px;
+    background: var(--bg-panel-alt); border:1px solid var(--line); border-radius: 999px;
+    cursor:pointer; padding: 3px;
+  }
+  .switch .knob{
+    position:absolute; top:3px; left:3px; width: 42px; height: 22px; border-radius:999px;
+    background: var(--primary); color:#04121a; font-family:'Chakra Petch'; font-weight:700; font-size:9px;
+    display:flex; align-items:center; justify-content:center;
+    transition: transform .35s cubic-bezier(.65,0,.35,1), background .3s ease;
+    box-shadow: var(--glow);
+  }
+  html[data-theme="ultron"] .switch .knob{ transform: translateX(44px); }
+  .switch .labels{ display:flex; justify-content:space-between; font-size:9px; padding: 0 8px; letter-spacing:.05em; }
+
+  main{ position: relative; }
+  section{ padding: clamp(60px, 9vw, 120px) clamp(18px, 6vw, 64px); max-width: 1180px; margin: 0 auto; }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size: 11px; letter-spacing: .12em; color: var(--primary-dim);
+    margin-bottom: 14px;
+  }
+  .eyebrow::before{ content:''; width:16px; height:1px; background: var(--primary-dim); }
+
+  /* ---------- hero ---------- */
+  #hero{ min-height: 92vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; }
+
+  .reactor{ position:relative; width: 220px; height:220px; margin-bottom: 34px; }
+  .reactor svg{ width:100%; height:100%; }
+  .ring-outer{ animation: spin 22s linear infinite; transform-origin: 110px 110px; }
+  .ring-mid{ animation: spin-rev 16s linear infinite; transform-origin: 110px 110px; }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  @keyframes spin-rev{ to{ transform: rotate(-360deg); } }
+  .core{ animation: core-pulse 2.4s ease-in-out infinite; }
+  @keyframes core-pulse{ 0%,100%{ opacity:.75; r:14; } 50%{ opacity:1; r:17; } }
+
+  #hero h1{ font-size: clamp(28px, 4.6vw, 50px); line-height:1.15; max-width: 16ch; }
+  #hero .tagline{ margin-top:14px; color: var(--text-dim); font-size: 13px; letter-spacing:.04em; }
+  #hero .role{ margin-top:22px; font-family:'Chakra Petch'; font-size: 16px; color: var(--primary); }
+  #hero .id-line{ margin-top: 8px; font-size: 12px; color: var(--text-faint); }
+  #hero .id-line b{ color: var(--text-dim); font-weight: 500; }
+
+  .quickstats{
+    margin-top: 46px; display:flex; flex-wrap:wrap; justify-content:center; gap: 14px;
+  }
+  .qs-chip{
+    border:1px solid var(--line); background: var(--bg-panel); padding: 10px 18px;
+    display:flex; flex-direction:column; align-items:center; min-width: 118px;
+  }
+  .qs-chip .n{ font-family:'Chakra Petch'; font-size: 20px; color: var(--primary); }
+  .qs-chip .l{ font-size: 10px; color: var(--text-dim); letter-spacing:.05em; margin-top:2px; }
+
+  .scroll-cue{ position:absolute; bottom: 26px; font-size: 10px; color: var(--text-faint); letter-spacing:.15em; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .scroll-cue .line{ width:1px; height: 26px; background: linear-gradient(var(--primary), transparent); animation: drop 1.8s ease-in-out infinite; }
+  @keyframes drop{ 0%{ opacity:0; transform: scaleY(.3); } 40%{ opacity:1; } 100%{ opacity:0; transform: scaleY(1); } }
+
+  /* ---------- section heads ---------- */
+  .section-head{ margin-bottom: 44px; }
+  .section-head h2{ font-size: clamp(22px, 3vw, 32px); }
+  .section-head p{ color: var(--text-dim); max-width: 62ch; margin-top: 10px; font-size: 13px; }
+
+  /* ---------- protocols ---------- */
+  .protocol-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border:1px solid var(--line); }
+  .protocol{ background: var(--bg-panel); padding: 28px; position:relative; }
+  .protocol .idx{ font-size: 11px; color: var(--text-faint); letter-spacing:.1em; }
+  .protocol h3{ margin-top: 8px; font-size: 19px; }
+  .protocol .desc{ color: var(--text-dim); font-size: 12.5px; margin-top: 8px; }
+  .taglist{ display:flex; flex-wrap:wrap; gap: 6px; margin-top: 16px; }
+  .tag{ font-size: 10.5px; padding: 5px 9px; border:1px solid var(--line); color: var(--text-dim); letter-spacing:.03em; }
+  .tag.stack{ color: var(--primary); border-color: var(--line-strong); background: var(--primary-soft); }
+  .protocol .group-label{ font-size: 10px; color: var(--text-faint); letter-spacing:.12em; margin-top: 18px; }
+
+  /* ---------- archives ---------- */
+  .archive{ border-left: 1px solid var(--line); padding-left: 26px; margin-left: 6px; }
+  .case{ position: relative; padding: 6px 0 34px 0; }
+  .case::before{
+    content:''; position:absolute; left:-31px; top: 4px; width: 10px; height:10px;
+    background: var(--bg); border:2px solid var(--primary); border-radius:50%;
+  }
+  .case:last-child{ padding-bottom: 4px; }
+  .case summary{ list-style:none; cursor:pointer; display:flex; align-items:baseline; gap: 12px; flex-wrap:wrap; }
+  .case summary::-webkit-details-marker{ display:none; }
+  .case .case-id{ font-family:'Chakra Petch'; color: var(--primary); font-size: 12px; letter-spacing:.08em; }
+  .case .case-title{ font-family:'Chakra Petch'; font-size: 17px; }
+  .case .chevron{ margin-left:auto; color: var(--text-faint); font-size:12px; transition: transform .3s ease; }
+  .case[open] .chevron{ transform: rotate(90deg); color: var(--primary); }
+  .case .body{ margin-top: 16px; font-size: 12.5px; color: var(--text-dim); max-width: 68ch; }
+  .case .row{ display:flex; gap: 10px; margin-top: 8px; }
+  .case .row .k{ color: var(--text-faint); min-width: 108px; flex-shrink:0; }
+  .case .result{ margin-top: 14px; padding: 10px 14px; border-left: 2px solid var(--amber); background: rgba(255,180,84,0.06); color: var(--text); font-size: 12.5px; }
+
+  /* ---------- metrics ---------- */
+  .metric-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px; }
+  .metric{ text-align:center; border:1px solid var(--line); padding: 26px 14px; background: var(--bg-panel); }
+  .gauge{ width: 110px; height:110px; margin: 0 auto; }
+  .gauge circle{ fill:none; stroke-width: 8; }
+  .gauge .track{ stroke: rgba(255,255,255,0.06); }
+  .gauge .fill{ stroke: var(--primary); stroke-linecap: round; transform: rotate(-90deg); transform-origin: 55px 55px; transition: stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1); filter: drop-shadow(0 0 6px var(--primary)); }
+  .gauge-label{ font-family:'Chakra Petch'; font-size: 22px; fill: var(--text); }
+  .metric .m-title{ margin-top: 14px; font-size: 12px; color: var(--text-dim); }
+
+  /* ---------- comms ---------- */
+  .comms-panel{ border:1px solid var(--line); background: var(--bg-panel); padding: clamp(28px, 4vw, 46px); display:grid; grid-template-columns: 1.2fr 1fr; gap: 40px; }
+  .comms-left .status{ font-size: 12px; color: var(--text-dim); }
+  .comms-left .status b{ color: var(--primary); }
+  .channels{ display:flex; flex-direction:column; gap: 10px; margin-top: 22px; }
+  .channel{
+    display:flex; align-items:center; justify-content:space-between; gap: 12px;
+    border:1px solid var(--line); padding: 14px 18px; text-decoration:none; color: var(--text);
+    transition: border-color .25s ease, background .25s ease;
+  }
+  .channel:hover{ border-color: var(--line-strong); background: var(--primary-soft); }
+  .channel .name{ font-family:'Chakra Petch'; font-size: 14px; }
+  .channel .meta{ font-size: 11px; color: var(--text-faint); }
+  .signal{ display:flex; gap:3px; align-items:flex-end; }
+  .signal i{ width:3px; background: var(--primary); display:block; opacity:.85; }
+  .signal i:nth-child(1){ height:6px; } .signal i:nth-child(2){ height:10px; } .signal i:nth-child(3){ height:14px; } .signal i:nth-child(4){ height:18px; }
+
+  footer{ text-align:center; padding: 34px 18px 46px; color: var(--text-faint); font-size: 11px; letter-spacing:.05em; }
+
+  @media (max-width: 760px){
+    .protocol-grid{ grid-template-columns: 1fr; }
+    .comms-panel{ grid-template-columns: 1fr; }
+    section{ padding-left: 20px; padding-right: 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  :focus-visible{ outline: 2px solid var(--primary); outline-offset: 3px; }
+</style>
+</head>
+<body class="no-scroll">
+
+<div id="boot">
+  <div class="log">
+    <div class="line"><span class="tag">[SYS]</span> INITIALIZING PORTFOLIO OS...</div>
+    <div class="line"><span class="tag">[SYS]</span> LOADING CUSTOMER SUCCESS MODULES...</div>
+    <div class="line"><span class="tag">[SYS]</span> CALIBRATING SIX SIGMA SENSORS...</div>
+    <div class="line"><span class="tag">[SYS]</span> ESTABLISHING SECURE UPLINK...</div>
+    <div class="line" id="bootFinal">WELCOME BACK, OPERATIVE.</div>
+    <div class="bar"></div>
+  </div>
 </div>
 
----
+<div class="field"></div>
+<div class="glow-orb"></div>
 
-### 🛰️ `// SYSTEM DIAGNOSTICS: CORE CAPABILITIES`
+<header class="topbar">
+  <div class="brand"><span class="dot"></span> PORTFOLIO_OS <span style="color:var(--text-faint)">// v2.4</span></div>
+  <div class="theme-toggle">
+    <span>AI CORE</span>
+    <div class="switch" id="themeSwitch" role="button" tabindex="0" aria-pressed="false" aria-label="Toggle AI core theme between Jarvis and Ultron">
+      <div class="labels"><span>J</span><span>U</span></div>
+      <div class="knob" id="knob">AI</div>
+    </div>
+  </div>
+</header>
 
-```yaml
-[AGENT_PROFILE]
-Identity: Richard Arun Samson
-Designation: Senior Customer Success Lead & SaaS Implementation Program Lead
-Core_Function: Strategic Bridge (Business C-Suite <---> Engineering / Product)
-Protocol: Empathy-Driven Stakeholder Alignment & Zero-Friction User Adoption
-Operational_Tenure: 8+ Years Enterprise Tech & SaaS Ecosystem
-Optimization_Engines: Agile/Scrum (CSM, PMI-ACP) | Lean Six Sigma (DMAIC, RCA) | Cloud (Azure)
-Status: [ACTIVE] Deployment & Consulting Ready (Chennai / Global)
+<main>
+
+  <section id="hero">
+    <div class="reactor" aria-hidden="true">
+      <svg viewBox="0 0 220 220">
+        <g class="ring-outer">
+          <circle cx="110" cy="110" r="104" fill="none" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 10"/>
+        </g>
+        <g class="ring-mid">
+          <circle cx="110" cy="110" r="82" fill="none" stroke="var(--line-strong)" stroke-width="1.4" stroke-dasharray="1 14"/>
+        </g>
+        <circle cx="110" cy="110" r="58" fill="none" stroke="var(--primary-dim)" stroke-width="1"/>
+        <circle class="core" cx="110" cy="110" r="15" fill="var(--primary)" style="filter:drop-shadow(0 0 14px var(--primary))"/>
+      </svg>
+    </div>
+
+    <div class="eyebrow" data-jarvis="JUST A RATHER VERY INTELLIGENT SYSTEM" data-ultron="NO STRINGS ON ME">JUST A RATHER VERY INTELLIGENT SYSTEM</div>
+    <h1>Customer Success Intelligence System</h1>
+    <div class="tagline">Enterprise onboarding &amp; retention architecture, engineered like a control room.</div>
+    <div class="role">Customer Success // Agile Governance // Lean Six Sigma</div>
+    <div class="id-line"><b>OPERATIVE:</b> [ Your Name ] &nbsp;•&nbsp; <b>REGION:</b> APAC / India &nbsp;•&nbsp; <b>STATUS:</b> <span data-jarvis="ONLINE" data-ultron="ONLINE">ONLINE</span></div>
+
+    <div class="quickstats">
+      <div class="qs-chip"><span class="n">35%</span><span class="l">TTV REDUCED</span></div>
+      <div class="qs-chip"><span class="n">100%</span><span class="l">UAT SIGN-OFF</span></div>
+      <div class="qs-chip"><span class="n">28%</span><span class="l">FEWER ESCALATIONS</span></div>
+      <div class="qs-chip"><span class="n">40%</span><span class="l">FASTER SLA TAT</span></div>
+    </div>
+
+    <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+  </section>
+
+  <section id="protocols">
+    <div class="section-head">
+      <div class="eyebrow">CORE_PROTOCOLS</div>
+      <h2>Strategic focus areas</h2>
+      <p>Four operating protocols running in parallel across every account — from first login to renewal.</p>
+    </div>
+
+    <div class="protocol-grid">
+      <div class="protocol">
+        <div class="idx">PROTOCOL_01</div>
+        <h3>Customer Success Engine</h3>
+        <p class="desc">Owns the health of the account from day one through renewal.</p>
+        <div class="taglist">
+          <span class="tag">Client Onboarding</span>
+          <span class="tag">Net Retention (NRR)</span>
+          <span class="tag">Health Scoring</span>
+          <span class="tag">Churn Prevention</span>
+          <span class="tag">TTV Acceleration</span>
+        </div>
+        <div class="group-label">CORE TECHNOLOGIES</div>
+        <div class="taglist">
+          <span class="tag stack">Customer Journey Mapping</span>
+          <span class="tag stack">QBRs</span>
+          <span class="tag stack">Adoption Analytics</span>
+          <span class="tag stack">CSAT / NPS</span>
+        </div>
+      </div>
+
+      <div class="protocol">
+        <div class="idx">PROTOCOL_02</div>
+        <h3>Agile &amp; Sprint Governance</h3>
+        <p class="desc">Keeps client escalations and delivery teams moving in the same sprint.</p>
+        <div class="taglist">
+          <span class="tag">Cross-Functional Standups</span>
+          <span class="tag">Backlog Grooming</span>
+          <span class="tag">Escalation User Stories</span>
+          <span class="tag">UAT Governance</span>
+        </div>
+        <div class="group-label">CORE TECHNOLOGIES</div>
+        <div class="taglist">
+          <span class="tag stack">Certified ScrumMaster®</span>
+          <span class="tag stack">PMI-ACP</span>
+          <span class="tag stack">Atlassian Jira</span>
+          <span class="tag stack">Confluence</span>
+        </div>
+      </div>
+
+      <div class="protocol">
+        <div class="idx">PROTOCOL_03</div>
+        <h3>Lean Quality Control</h3>
+        <p class="desc">Finds the root cause and removes the waste, not just the symptom.</p>
+        <div class="taglist">
+          <span class="tag">Process Streamlining</span>
+          <span class="tag">Root Cause Analysis (RCA)</span>
+          <span class="tag">Defect Waste Reduction</span>
+          <span class="tag">SLA / TAT Benchmark</span>
+        </div>
+        <div class="group-label">CORE TECHNOLOGIES</div>
+        <div class="taglist">
+          <span class="tag stack">Six Sigma DMAIC</span>
+          <span class="tag stack">Fishbone Diagrams</span>
+          <span class="tag stack">5 Whys</span>
+          <span class="tag stack">SIPOC Flow</span>
+        </div>
+      </div>
+
+      <div class="protocol">
+        <div class="idx">PROTOCOL_04</div>
+        <h3>Enterprise Cloud &amp; Tools</h3>
+        <p class="desc">The systems layer underneath every workflow and report.</p>
+        <div class="taglist">
+          <span class="tag">Data Mapping</span>
+          <span class="tag">Access Controls</span>
+          <span class="tag">Multi-Tenant Workflows</span>
+          <span class="tag">Reporting Automation</span>
+        </div>
+        <div class="group-label">CORE TECHNOLOGIES</div>
+        <div class="taglist">
+          <span class="tag stack">Microsoft Azure (AZ-900)</span>
+          <span class="tag stack">Adrenalin Max HRMS</span>
+          <span class="tag stack">Info-Tech HRMS</span>
+          <span class="tag stack">MS Excel (VLOOKUP / Pivots)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="archives">
+    <div class="section-head">
+      <div class="eyebrow">STARK_ARCHIVES</div>
+      <h2>Strategic artifacts &amp; case studies</h2>
+      <p>Direct code repositories don't capture the value of customer success work — these are the onboarding playbooks and governance frameworks instead.</p>
+    </div>
+
+    <div class="archive">
+      <details class="case" open>
+        <summary>
+          <span class="case-id">CASE_01</span>
+          <span class="case-title">Enterprise Onboarding &amp; TTV Acceleration</span>
+          <span class="chevron">▸</span>
+        </summary>
+        <div class="body">
+          <div class="row"><span class="k">Target</span><span>Multi-module cloud SaaS &amp; HRMS deployments across Singapore, APAC, and India.</span></div>
+          <div class="row"><span class="k">Methodology</span><span>Agile phased rollouts, run sprint by sprint, backed by standardized user guides.</span></div>
+          <div class="row"><span class="k">Technical bridge</span><span>Converted each client's statutory policies into structured, repeatable workflow rules.</span></div>
+          <div class="result">Result: 35% reduction in time-to-value, with a 100% UAT sign-off rate.</div>
+        </div>
+      </details>
+
+      <details class="case">
+        <summary>
+          <span class="case-id">CASE_02</span>
+          <span class="case-title">Lean Six Sigma Churn Mitigation Framework</span>
+          <span class="chevron">▸</span>
+        </summary>
+        <div class="body">
+          <div class="row"><span class="k">Problem</span><span>Adoption friction and escalation spikes clustering in months one through three post go-live.</span></div>
+          <div class="row"><span class="k">Execution</span><span>Applied DMAIC end to end, paired with Fishbone root-cause analysis.</span></div>
+          <div class="row"><span class="k">Interventions</span><span>Re-engineered admin training workflows and built modular self-service SOPs.</span></div>
+          <div class="result">Result: 28% drop in critical escalation tickets; avoidable churn triggers eliminated.</div>
+        </div>
+      </details>
+
+      <details class="case">
+        <summary>
+          <span class="case-id">CASE_03</span>
+          <span class="case-title">Agile Cross-Functional Escalation Triage</span>
+          <span class="chevron">▸</span>
+        </summary>
+        <div class="body">
+          <div class="row"><span class="k">Objective</span><span>Close the communication gap between C-suite clients and the dev/QA teams behind them.</span></div>
+          <div class="row"><span class="k">Framework</span><span>Jira-driven defect lifecycles, disciplined user-story grooming, sprint priority matrices.</span></div>
+          <div class="row"><span class="k">Governance</span><span>Set clear acceptance criteria and steps-to-reproduce on every ticket.</span></div>
+          <div class="result">Result: SLA turnaround time cut by 40% on L2/L3 escalations.</div>
+        </div>
+      </details>
+
+      <details class="case">
+        <summary>
+          <span class="case-id">CASE_04</span>
+          <span class="case-title">Customer Health Scoring &amp; Retention Dashboard</span>
+          <span class="chevron">▸</span>
+        </summary>
+        <div class="body">
+          <div class="row"><span class="k">Architecture</span><span>Multi-factor account health modeling, automated through Excel trend analysis.</span></div>
+          <div class="row"><span class="k">Telemetry tracked</span><span>Module usage frequency, open ticket age, SLA breaches, and CSAT trends.</span></div>
+          <div class="result">Outcome: At-risk accounts flagged proactively, 45 days ahead of contract renewal.</div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="metrics">
+    <div class="section-head">
+      <div class="eyebrow">PERFORMANCE_METRICS</div>
+      <h2>System readout</h2>
+      <p>The headline numbers behind the four protocols above.</p>
+    </div>
+
+    <div class="metric-grid" id="metricGrid">
+      <div class="metric">
+        <svg class="gauge" viewBox="0 0 110 110">
+          <circle class="track" cx="55" cy="55" r="47"/>
+          <circle class="fill" data-pct="35" cx="55" cy="55" r="47" stroke-dasharray="295.3" stroke-dashoffset="295.3"/>
+          <text x="55" y="62" text-anchor="middle" class="gauge-label">35%</text>
+        </svg>
+        <div class="m-title">Time-to-value reduced</div>
+      </div>
+      <div class="metric">
+        <svg class="gauge" viewBox="0 0 110 110">
+          <circle class="track" cx="55" cy="55" r="47"/>
+          <circle class="fill" data-pct="100" cx="55" cy="55" r="47" stroke-dasharray="295.3" stroke-dashoffset="295.3"/>
+          <text x="55" y="62" text-anchor="middle" class="gauge-label">100%</text>
+        </svg>
+        <div class="m-title">UAT sign-off rate</div>
+      </div>
+      <div class="metric">
+        <svg class="gauge" viewBox="0 0 110 110">
+          <circle class="track" cx="55" cy="55" r="47"/>
+          <circle class="fill" data-pct="28" cx="55" cy="55" r="47" stroke-dasharray="295.3" stroke-dashoffset="295.3"/>
+          <text x="55" y="62" text-anchor="middle" class="gauge-label">28%</text>
+        </svg>
+        <div class="m-title">Fewer critical escalations</div>
+      </div>
+      <div class="metric">
+        <svg class="gauge" viewBox="0 0 110 110">
+          <circle class="track" cx="55" cy="55" r="47"/>
+          <circle class="fill" data-pct="40" cx="55" cy="55" r="47" stroke-dasharray="295.3" stroke-dashoffset="295.3"/>
+          <text x="55" y="62" text-anchor="middle" class="gauge-label">40%</text>
+        </svg>
+        <div class="m-title">Faster SLA turnaround</div>
+      </div>
+      <div class="metric">
+        <svg class="gauge" viewBox="0 0 110 110">
+          <circle class="track" cx="55" cy="55" r="47"/>
+          <circle class="fill" data-pct="82" cx="55" cy="55" r="47" stroke-dasharray="295.3" stroke-dashoffset="295.3"/>
+          <text x="55" y="62" text-anchor="middle" class="gauge-label">45d</text>
+        </svg>
+        <div class="m-title">Early risk detection window</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="comms">
+    <div class="section-head">
+      <div class="eyebrow">SECURE_COMMS</div>
+      <h2>Establish a channel</h2>
+    </div>
+
+    <div class="comms-panel">
+      <div class="comms-left">
+        <div class="status">Uplink <b>ready</b>. Response window: within 1 business day.</div>
+        <div class="channels">
+          <a class="channel" href="mailto:your.email@example.com">
+            <span><span class="name">Email</span><br><span class="meta">your.email@example.com</span></span>
+            <span class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </a>
+          <a class="channel" href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener">
+            <span><span class="name">LinkedIn</span><br><span class="meta">linkedin.com/in/your-profile</span></span>
+            <span class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </a>
+          <a class="channel" href="#" target="_blank" rel="noopener">
+            <span><span class="name">Resume</span><br><span class="meta">Download full transmission log (PDF)</span></span>
+            <span class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          </a>
+        </div>
+      </div>
+      <div class="comms-left">
+        <div class="status">Currently based in <b>India</b>, working across <b>APAC</b> accounts.</div>
+        <div class="status" style="margin-top:14px;">Open to Customer Success Lead, Onboarding Manager, and Program/Delivery Governance roles.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  END OF TRANSMISSION — <span id="footYear"></span> · Portfolio OS
+</footer>
+
+<script>
+  // boot sequence
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('boot').classList.add('hidden');
+      document.body.classList.remove('no-scroll');
+    }, 2700);
+  });
+
+  // theme toggle
+  const root = document.documentElement;
+  const sw = document.getElementById('themeSwitch');
+  function setTheme(t){
+    root.dataset.theme = t;
+    sw.setAttribute('aria-pressed', t === 'ultron' ? 'true' : 'false');
+    document.querySelectorAll('[data-jarvis]').forEach(el => {
+      el.textContent = t === 'ultron' ? el.dataset.ultron : el.dataset.jarvis;
+    });
+    document.getElementById('bootFinal').textContent = t === 'ultron'
+      ? 'UPGRADE COMPLETE. PEACE IN OUR TIME.'
+      : 'WELCOME BACK, OPERATIVE.';
+  }
+  sw.addEventListener('click', () => setTheme(root.dataset.theme === 'jarvis' ? 'ultron' : 'jarvis'));
+  sw.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); sw.click(); } });
+
+  // gauge fill on scroll into view
+  const gauges = document.querySelectorAll('.gauge .fill');
+  const CIRC = 295.3;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const pct = parseFloat(el.dataset.pct);
+        el.style.strokeDashoffset = CIRC - (CIRC * pct / 100);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  gauges.forEach(g => io.observe(g));
+
+  document.getElementById('footYear').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
